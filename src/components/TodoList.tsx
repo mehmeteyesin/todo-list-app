@@ -3,22 +3,42 @@ import TodoItem from './TodoItem';
 
 interface Todo {
     text: string;
-    completed: boolean;
+    status: 'not-started' | 'in-progress' | 'completed';
+    createDate: Date;
 }
 
 interface Props {
     todos: Todo[];
-    toggleTodo: (index: number) => void;
+    updateTodoStatus: (index: number, status: 'not-started' | 'in-progress' | 'completed') => void;
+    editTodo: (index: number, newText: string) => void;
+    deleteTodo: (index: number) => void;
 }
 
-const TodoList: React.FC<Props> = ({ todos, toggleTodo }) => {
+const TodoList: React.FC<Props> = ({ todos, updateTodoStatus, editTodo, deleteTodo }) => {
     return (
-        <ul>
+        <table>
+            <thead>
+            <tr>
+                <th className="description">Description</th>
+                <th className="status">Status</th>
+                <th className="date">Create Date</th>
+                <th className="actions"></th>
+            </tr>
+            </thead>
+            <tbody>
             {todos.map((todo, index) => (
-                <TodoItem key={index} todo={todo} index={index} toggleTodo={toggleTodo} />
+                <TodoItem
+                    key={index}
+                    todo={todo}
+                    index={index}
+                    updateTodoStatus={updateTodoStatus}
+                    editTodo={editTodo}
+                    deleteTodo={deleteTodo}
+                />
             ))}
-        </ul>
+            </tbody>
+        </table>
     );
-}
+};
 
 export default TodoList;
